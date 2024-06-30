@@ -28,27 +28,27 @@
                 </p>
             </div>
             <div class="row g-4 justify-content-center">
-                <div class="col-lg-4 col-md-6">
-                    <div class="blog-item">
-                        <div class="blog-img">
-                            <div class="blog-img-inner">
-                                <img class="img-fluid w-100 rounded-top" src="/frontend/assets/img/blog-1.jpg"
-                                    alt="Image">
+                @foreach ($galery as $item)
+                    <div class="col-lg-4 col-md-6">
+                        <div class="blog-item">
+                            <div class="blog-img">
+                                <div class="blog-img-inner">
+                                    <img class="img-fluid w-100 rounded-top" src="{{url('').'/storage/'.$item->gambar}}"
+                                        alt="Image">
+
+                                </div>
 
                             </div>
+                            <div class="blog-content border border-top-0 rounded-bottom p-4">
 
-                        </div>
-                        <div class="blog-content border border-top-0 rounded-bottom p-4">
-
-                            <a href="#" class="h4">Adventures Trip</a>
-                            <p class="my-3">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam
-                                eos
-                            </p>
-                            <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More</a>
+                                <a href="#" class="h4">{{$item->topik}}</a>
+                                <p class="my-3">{{$item->caption}}</p>
+                                <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
+                @endforeach
+                {{-- <div class="col-lg-4 col-md-6">
                     <div class="blog-item">
                         <div class="blog-/frontend/assets/">
                             <div class="blog-img-inner">
@@ -147,7 +147,7 @@
                             <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </div>

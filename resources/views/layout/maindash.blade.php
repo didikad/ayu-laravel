@@ -35,6 +35,10 @@
             display: none;
         }
     </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Include CSS Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 
 </head>
 
@@ -115,6 +119,8 @@
     <!-- Page level custom scripts -->
     <script src="/backend/assets/js/demo/datatables-demo.js"></script>
 
+    <!-- Include JS Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
         $('#datatable').dataTable({
             "ordering": false

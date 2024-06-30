@@ -99,106 +99,27 @@
                 </div>
 
                 <div class="packages-carousel owl-carousel">
-                    <div class="packages-item">
-                        <div class="packages-img">
-                            <img src="/frontend/assets/img/packages-4.jpg" class="img-fluid w-100 rounded-top"
-                                alt="Image">
-
-
-                        </div>
-                        <div class="packages-content bg-light">
-                            <div class="p-4 pb-0">
-                                <h5 class="mb-0">Venice - Italy</h5>
-
-                                <p class="mb-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                                    Nesciunt
-                                    nemo
-                                    quia
-                                    quae illum aperiam fugiat voluptatem repellat</p>
+                    @foreach ($galery as $item)    
+                        <div class="packages-item">
+                            <div class="packages-img">
+                                <img src="{{url('').'/storage/'.$item->gambar}}" class="img-fluid w-100 rounded-top"
+                                    alt="Image">
                             </div>
-                            <div class="row bg-primary rounded-bottom mx-0">
-                                <div class="col-6 text-start px-0">
-                                    <a href="#" class="btn-hover btn text-white py-2 px-4">Read More</a>
+                            <div class="packages-content bg-light">
+                                <div class="p-4 pb-0">
+                                    <h5 class="mb-0">{{$item->topik}}</h5>
+
+                                    <p class="mb-4">{{$item->caption}}</p>
                                 </div>
+                                <div class="row bg-primary rounded-bottom mx-0">
+                                    <div class="col-6 text-start px-0">
+                                        <a href="#" class="btn-hover btn text-white py-2 px-4">Read More</a>
+                                    </div>
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="packages-item">
-                        <div class="packages-img">
-                            <img src="/frontend/assets/img/packages-2.jpg" class="img-fluid w-100 rounded-top"
-                                alt="Image">
-
-
-                        </div>
-                        <div class="packages-content bg-light">
-                            <div class="p-4 pb-0">
-                                <h5 class="mb-0">The New California</h5>
-
-                                <p class="mb-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                                    Nesciunt
-                                    nemo
-                                    quia
-                                    quae illum aperiam fugiat voluptatem repellat</p>
-                            </div>
-                            <div class="row bg-primary rounded-bottom mx-0">
-                                <div class="col-6 text-start px-0">
-                                    <a href="#" class="btn-hover btn text-white py-2 px-4">Read More</a>
                                 </div>
-
                             </div>
                         </div>
-                    </div>
-                    <div class="packages-item">
-                        <div class="packages-img">
-                            <img src="/frontend/assets/img/packages-3.jpg" class="img-fluid w-100 rounded-top"
-                                alt="Image">
-
-
-                        </div>
-                        <div class="packages-content bg-light">
-                            <div class="p-4 pb-0">
-                                <h5 class="mb-0">Discover Japan</h5>
-
-                                <p class="mb-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                                    Nesciunt
-                                    nemo
-                                    quia
-                                    quae illum aperiam fugiat voluptatem repellat</p>
-                            </div>
-                            <div class="row bg-primary rounded-bottom mx-0">
-                                <div class="col-6 text-start px-0">
-                                    <a href="#" class="btn-hover btn text-white py-2 px-4">Read More</a>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="packages-item">
-                        <div class="packages-img">
-                            <img src="/frontend/assets/img/packages-1.jpg" class="img-fluid w-100 rounded-top"
-                                alt="Image">
-
-
-                        </div>
-                        <div class="packages-content bg-light">
-                            <div class="p-4 pb-0">
-                                <h5 class="mb-0">Thayland Trip</h5>
-
-                                <p class="mb-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                                    Nesciunt
-                                    nemo
-                                    quia
-                                    quae illum aperiam fugiat voluptatem repellat</p>
-                            </div>
-                            <div class="row bg-primary rounded-bottom mx-0">
-                                <div class="col-6 text-start px-0">
-                                    <a href="#" class="btn-hover btn text-white py-2 px-4">Read More</a>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

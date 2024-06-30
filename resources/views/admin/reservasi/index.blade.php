@@ -29,7 +29,15 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $reservasi->nama }}</td>
                                         <td>{{ $reservasi->tanggal_reservasi }}</td>
-                                        <td>{{ $reservasi->status }}</td>
+                                        <td>
+                                            <select name="status" class="form-control" id="statusUpdate-{{$reservasi->id}}">
+                                                <option value="proses" @if ($reservasi->status == 'proses') selected @endif>Proses</option>
+                                                <option value="pending" @if ($reservasi->status == 'pending') selected @endif>Pending</option>
+                                                <option value="diterima" @if ($reservasi->status == 'diterima') selected @endif>Diterima</option>
+                                                <option value="ditolak" @if ($reservasi->status == 'ditolak') selected @endif>Ditolak</option>
+                                                <option value="selesai" @if ($reservasi->status == 'selesai') selected @endif>Selesai</option>
+                                            </select>
+                                        </td>
                                         <td class="text-center">
                                             <a href="{{ route('admin.reservasi.show', $reservasi->id) }}" class="btn btn-primary btn-sm">Detail</a>
                                             <a href="{{ route('admin.reservasi.edit', $reservasi->id) }}" class="btn btn-warning btn-sm">Edit</a>
@@ -60,6 +68,36 @@
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable();
+
+            $('select[id^=statusUpdate-]').on("change", function () {
+                var id = $(this).attr('id').split('-')[1];
+                var status = $(this).val();
+                var token = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    url:'{{url('admin/updateStatus')}}',
+                    type:'POST',
+                    data:{
+                        _token: token,
+                        id:id,
+                        status:status
+                    },
+                    success: function(response){
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: response.success,
+                            icon: "success",
+                        })
+                    },
+                    error: function(error){
+                        Swal.fire({
+                            title: "Gagal!",
+                            text: "Gagal Update Data",
+                            icon: "error",
+                        })
+                    }
+                })
+            })
         });
     </script>
 @endsection

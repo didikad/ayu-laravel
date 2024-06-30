@@ -27,8 +27,10 @@ class AdminController extends Controller
     // Method untuk menampilkan halaman posts
     public function posts()
     {
+        $galery = Galery::where('type', 'post')->get();
         return view('admin.posts', [
             'title' => 'Posts',
+            'galery' => $galery,
         ]);
     }
 
@@ -339,7 +341,96 @@ class AdminController extends Controller
     }
 
     public function pemohonView(){
-        return view('admin.pemohon');
+        $pemohon  = Reservasi::when(request('pemohon'), function($query){
+            $query->where('status', request('pemohon'));
+        })->get();
+        
+        return view('admin.pemohon', compact('pemohon'));
+    }
+
+    public function countPemohon($status){
+        $pemohon  = Reservasi::where('status', $status)->count();
+
+        return $pemohon;
+    }
+
+    public function updateStatus(Request $request){
+        try {
+            $reservasi = Reservasi::findOrFail($request->id);
+            $reservasi->status = $request->status;
+            $reservasi->save();
+
+            return response()->json(['success'=>"Berhasil Update Status"], 201);
+        } catch (\Throwable $th) {
+            return response()->json(['error'=>"Gagal Update Status"], 422);
+        }
+    }
+
+    public function agendaSelesai(Request $request){
+        $search = $request->input('q');
+        $reservasi = Reservasi::where('status', 'selesai')
+            ->where(function ($query) use ($search) {
+                $query->where('nama', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
+                    ->orWhere('nomor_hp', 'like', "%$search%")
+                    ->orWhere('topik', 'like', "%$search%")
+                    ->orWhere('nama_instansi', 'like', "%$search%");
+            })
+            ->get();
+
+        $filteredReservasi = $reservasi->filter(function ($item) {
+            return !Galery::where('agenda_id', $item->id)->exists();
+        });
+
+        $results = $filteredReservasi->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'text' => $item->nama
+            ];
+        });
+
+        return response()->json(['results' => $results]);
+    }
+
+    public function addGaleryAgenda(Request $request){
+        try {
+            $reservasi = Reservasi::findOrFail($request->agenda);
+            $galery = new Galery();
+            
+            if ($request->hasFile('gambar')) {
+                $gambar = $request->file('gambar')->store('galery_gambar', 'public');
+                $galery->gambar = $gambar;
+            } else {
+                return redirect()->back()->with('error', 'No image uploaded.');
+            }
+            
+            $galery->caption = $request->caption;
+            $galery->tanggal_kegiatan = $reservasi->tanggal_reservasi;
+            $galery->status = $request->status ?? NULL;
+            $galery->type = 'post';
+    
+            if ($request->type != 'wisata') {
+                $galery->agenda_id = $request->agenda;
+            }
+
+            $galery->created_at = now();
+            $galery->updated_at = now();
+    
+            $galery->save();
+            return redirect()->route('admin.posts')->with(['success'=> 'Galery Posts created successfully.']);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update Galery Posts.');
+        }
+    }
+
+    public function deleteAgendaById($id){
+        try {
+            $galery = Galery::findOrFail($id);
+            $galery->delete();
+            return redirect()->route('admin.posts')->with(['success'=> 'Galery Wisata deleted successfully.']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Failed to delete Galery Wisata.');
+        }
     }
     
 }

@@ -3,12 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Galery;
+use App\Models\Reservasi;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('home');
+        $galery = Galery::where('type', 'post')->get();
+
+        $galery->each(function ($item) {
+            $agenda = Reservasi::find($item->agenda_id);
+        
+            if ($agenda) {
+                $item->topik = $agenda->topik;
+            }
+        });
+        return view('home', compact('galery'));
     }
 
     public function jadwal()
@@ -18,7 +29,16 @@ class HomeController extends Controller
 
     public function galeri()
     {
-        return view('galeri');
+        $galery = Galery::where('type', 'post')->get();
+
+        $galery->each(function ($item) {
+            $agenda = Reservasi::find($item->agenda_id);
+        
+            if ($agenda) {
+                $item->topik = $agenda->topik;
+            }
+        });
+        return view('galeri', compact('galery'));
     }
 
     public function peta()

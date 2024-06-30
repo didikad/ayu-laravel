@@ -11,11 +11,16 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
+                locale: 'id',
                 events: {
                     url: '{{ url("admin/agenda/get") }}',
                         method: 'GET',
                         failure: function() {
-                            alert('there was an error while fetching events!');
+                            Swal.fire({
+                                title: "Gagal Mengambil Data",
+                                text: "Silahkan coba lagi",
+                                icon: 'error'
+                            })
                         }
                     },
                 editable: true,
@@ -28,7 +33,6 @@
                 eventClick: function(info) {
                     var eventId = info.event._def.publicId;
                     info.jsEvent.preventDefault();
-                    // window.location.href = "{{url('/admin/reservasi')}}/" + eventId;
                     window.open("{{url('/admin/reservasi')}}/" + eventId, '_blank');
                 }
             });

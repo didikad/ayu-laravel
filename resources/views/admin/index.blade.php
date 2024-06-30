@@ -73,9 +73,12 @@
     <div class="row">
         <div class="col-xl-12">
             <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">Daftar Reservasi</h6> &ensp;
-                    <a href="{{route('admin.reservasi.create')}}" class="btn btn-add btn-sm btn-primary">Tambahkan Data</a>
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Daftar Reservasi</h6> &ensp;
+                        <a href="{{route('admin.reservasi.create')}}" class="btn btn-add btn-sm btn-primary">Tambahkan Data</a>
+                    </div>
+                    <a href="{{route('admin.reservasi.index')}}" style="float: right" class="btn btn-all btn-sm btn-primary">See All</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -97,7 +100,15 @@
                                         <td>{{ $reservasi->nama }}</td>
                                         <td>{{ $reservasi->tanggal_reservasi }}</td>
                                         <td>{{ $reservasi->topik }}</td>
-                                        <td class="">{{ $reservasi->status }}</td>
+                                        <td class="">
+                                            <select name="status" class="form-control" id="statusUpdate-{{$reservasi->id}}">
+                                                <option value="proses" @if ($reservasi->status == 'proses') selected @endif>Proses</option>
+                                                <option value="pending" @if ($reservasi->status == 'pending') selected @endif>Pending</option>
+                                                <option value="diterima" @if ($reservasi->status == 'diterima') selected @endif>Diterima</option>
+                                                <option value="ditolak" @if ($reservasi->status == 'ditolak') selected @endif>Ditolak</option>
+                                                <option value="selesai" @if ($reservasi->status == 'selesai') selected @endif>Selesai</option>
+                                            </select>
+                                        </td>
                                         <td class="text-center">
                                             <a href="{{ route('admin.reservasi.show', $reservasi->id) }}" class="btn btn-primary btn-sm">Detail</a>
                                             <a href="{{ route('admin.reservasi.edit', $reservasi->id) }}" class="btn btn-warning btn-sm">Edit</a>
@@ -123,6 +134,36 @@
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable();
+
+            $('select[id^=statusUpdate-]').on("change", function () {
+                var id = $(this).attr('id').split('-')[1];
+                var status = $(this).val();
+                var token = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    url:'{{url('admin/updateStatus')}}',
+                    type:'POST',
+                    data:{
+                        _token: token,
+                        id:id,
+                        status:status
+                    },
+                    success: function(response){
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: response.success,
+                            icon: "success",
+                        })
+                    },
+                    error: function(error){
+                        Swal.fire({
+                            title: "Gagal!",
+                            text: "Gagal Update Data",
+                            icon: "error",
+                        })
+                    }
+                })
+            })
         });
     </script>
 @endsection

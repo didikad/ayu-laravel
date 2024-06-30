@@ -67,7 +67,7 @@
     </div>
 
     <li class="nav-item {{ Request::is('admin/pemohon*') ? 'active' : '' }}">
-        <a class="nav-link " href="/admin/pemohon">
+        <a class="nav-link " href="/admin/pemohon?pemohon=proses">
             <i class="fas fa-users"></i>
             <span>Pemohon</span>
         </a>

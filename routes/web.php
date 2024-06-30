@@ -56,6 +56,7 @@ Route::prefix('admin')->middleware(['auth:admin', AdminMiddleware::class, 'web']
     Route::get('/reservasi/{id}/edit', [AdminController::class, 'reservasiEdit'])->name('admin.reservasi.edit');
     Route::put('/reservasi/{id}', [AdminController::class, 'reservasiUpdate'])->name('admin.reservasi.update');
     Route::delete('/reservasi/{id}', [AdminController::class, 'reservasiDestroy'])->name('admin.reservasi.destroy');
+    Route::post('/updateStatus', [AdminController::class, 'updateStatus']);
 
     //Wisata Galery
     Route::post("/wisata/galery", [AdminController::class, 'unggahWisata']);
@@ -73,7 +74,13 @@ Route::prefix('admin')->middleware(['auth:admin', AdminMiddleware::class, 'web']
 //Route Supper Admin
 Route::prefix('admin')->middleware(['auth:admin', SuperAdminMiddleware::class])->group(function(){
     Route::get('/setadmin', [AdminController::class, 'setadmin'])->name('admin.setadmin');
+
+    //Post Galery
     Route::get('/posts', [AdminController::class, 'posts'])->name('admin.posts');
+    Route::get("/get/data", [AdminController::class, 'agendaSelesai']);
+    Route::delete("/delete/agenda/{id}", [AdminController::class, 'deleteAgendaById'])->name('admin.delete.post');
+    Route::post("/agenda/post", [AdminController::class, 'addGaleryAgenda'])->name('admin.post.agenda');
+    
 });
 
 // Route reservasi
@@ -97,6 +104,7 @@ Route::get('/sukses', function () {
 })->name('keterangan.sukses');
 
 Route::get('/sukses/{id}', [ReservasiController::class, 'showSuccess'])->name('keterangan.sukses.detail');
+Route::get("/agenda/get", [AdminController::class, 'getAgendaEvents']);
 
 // Route untuk role dan permission
 Route::group(['prefix' => 'all', 'middleware' => ['auth']], function () {
