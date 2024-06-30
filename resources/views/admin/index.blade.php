@@ -43,10 +43,12 @@
                 </div>
                 @php
                     $countReservasi = App::make('App\Http\Controllers\AdminController');
-                    $total = $countReservasi->countReservasi(['proses', 'diterima', 'ditolak']);
+                    $total = $countReservasi->countReservasi(['proses', 'diterima', 'ditolak', 'pending', 'selesai']);
                     $waiting = $countReservasi->countReservasi(['proses']);
                     $diterima = $countReservasi->countReservasi(['diterima']);
                     $ditolak = $countReservasi->countReservasi(['ditolak']);
+                    $pending = $countReservasi->countReservasi(['pending']);
+                    $selesai = $countReservasi->countReservasi(['selesai']);
                 @endphp
                 <div class="card-body">
                     <div class="row">
@@ -54,13 +56,19 @@
                             <p>Total Reservasi Masuk: {{$total}}</p>
                         </div>
                         <div class="col-md-6">
-                            <p>Total Reservasi Menunggu Konfirmasi: {{$waiting}}</p>
+                            <p>Total Reservasi Diproses: {{$waiting}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Total Reservasi Pending: {{$pending}}</p>
                         </div>
                         <div class="col-md-6">
                             <p>Total Reservasi Diterima: {{$diterima}}</p>
                         </div>
                         <div class="col-md-6">
                             <p>Total Reservasi Ditolak: {{$ditolak}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Total Reservasi Selesai: {{$selesai}}</p>
                         </div>
                     </div>
                 </div>
