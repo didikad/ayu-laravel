@@ -28,9 +28,11 @@ class AdminController extends Controller
     public function posts()
     {
         $galery = Galery::where('type', 'post')->get();
+        $galery_count = Galery::where('type', 'post')->count();
         return view('admin.posts', [
             'title' => 'Posts',
             'galery' => $galery,
+            'galery_count' => $galery_count,
         ]);
     }
 
